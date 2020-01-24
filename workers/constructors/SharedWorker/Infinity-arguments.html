@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Infinity as arguments</title>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script>
+async_test(function() {
+  const worker = new SharedWorker(Infinity, Infinity);
+  worker.port.onmessage = this.step_func_done(function(e) {
+    assert_equals(e.data[0], 'Infinity', 'first arg');
+    assert_equals(e.data[1], 'Infinity', 'second arg');
+  });
+}, 'Test constructing a shared worker with Infinity');
+</script>
