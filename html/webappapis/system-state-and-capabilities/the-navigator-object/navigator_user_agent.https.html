@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script src="/webrtc/dictionary-helper.js"></script>
+<script>
+  test(t => {
+    assert_true("getUserAgent" in navigator);
+  }, "navigator.getUserAgent() is exposed.");
+
+  promise_test(t => {
+    return new Promise(async (resolve) => {
+      const ua = navigator.getUserAgent();
+      for (brand of ua.brand) {
+        assert_equals(typeof brand.brand, 'string', "brand should be a string");
+        assert_equals(typeof brand.version, 'string', "version should be a string");
+      }
+      const platform = await ua.getPlatform();
+      assert_equals(typeof platform.brand, 'string', "Platform brand should be a string");
+      assert_equals(typeof platform.version, 'string', "Platform version should be a string");
+      const architecture = await ua.getArchitecture();
+      assert_equals(typeof architecture, 'string', "Architecture should be a string");
+      const model = await ua.getModel();
+      assert_equals(typeof model, 'string', "Model should be a string");
+      resolve();
+    });
+  }, "navigator.getUserAgent() returns a UserAgentMetadata object.");
+</script>
